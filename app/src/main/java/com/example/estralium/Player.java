@@ -116,6 +116,7 @@ public class Player {
         {
             this.woodCuttingXpNeeded = xp;
         }
+
     }
 
     //Woodcutting xp per click
@@ -163,11 +164,12 @@ public class Player {
     //TIME TO LEVEL
 
     public String woodCuttingXpLeft(){
+        //checkIfWoodCuttingLevelUp();
         return String.valueOf((int)(this.woodCuttingXpNeeded - this.woodCuttingXp));
     }
 
     public boolean checkIfWoodCuttingLevelUp(){
-        if (this.woodCuttingXpNeeded - this.woodCuttingXp <= 0){
+        if (this.woodCuttingXpNeeded - this.woodCuttingXp <= 0.999){
             return true;
         }
         else {

@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
             logs = findViewById(R.id.textViewLogs);
             tvWoodCuttingXpLeft = findViewById(R.id.textViewWoodCuttingXpLeft);
             player.Harvest(invent, 1, view.getId());
-            logs.setText(String.valueOf(invent.numOfLogs));
-            tvWoodCuttingXpLeft.setText(player.woodCuttingXpLeft());
+            logs.setText(String.valueOf(logCounter + invent.numOfLogs));
+            tvWoodCuttingXpLeft.setText(woodCuttingXpLeft + player.woodCuttingXpLeft());
         }
 
 
@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 player.setWoodCuttingXpNeeded(player.getWoodCuttingXpNeeded() * 1.3);
                 player.setWoodCuttingXp(0);
                 player.setWoodCuttingLevel();
+                tvWoodCuttingXpLeft.setText(woodCuttingXpLeft + player.woodCuttingXpLeft());
                 tvWoodCuttingLevel.setText(levelDisplay + player.getWoodCuttingLevelString());
                 LevelUpMessage(player.getWoodCuttingLevel(), "Woodcutting");
 
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         if (level % 5 == 0){
             levelUpMessage += "\n50% more xp per click!";
         }
-
+        Toast.makeText(getApplicationContext(), levelUpMessage, Toast.LENGTH_SHORT).show();
 
 
     }
