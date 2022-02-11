@@ -6,6 +6,7 @@ public class Player {
 
     private int playerLevel;
     private int playerXp;
+    private double playerXpNeeded;
     private int woodCuttingLevel;
     private int woodCuttingXp;
     private int numberOfLogs;
@@ -13,6 +14,8 @@ public class Player {
     private double woodCuttingXpNeeded;
 
     public Player(int playerLevel,
+                  int playerXp,
+                  double playerXpNeeded,
                   int woodCuttingLevel,
                   double woodCuttingXpNeeded,
                   int woodCuttingXp,
@@ -20,6 +23,8 @@ public class Player {
                   int woodCuttingXpPerClick)
     {
         this.playerLevel = playerLevel;
+        this.playerXp = playerXp;
+        this.playerXpNeeded = playerXpNeeded;
         this.woodCuttingLevel = woodCuttingLevel;
         this.woodCuttingXpNeeded = woodCuttingXpNeeded;
         this.woodCuttingXp = woodCuttingXp;
@@ -29,6 +34,8 @@ public class Player {
 
     public Player (){
         this.playerLevel = 1;
+        this.playerXp = 0;
+        this.playerXpNeeded = 60;
         this.woodCuttingLevel = 1;
         this.woodCuttingXpNeeded = 10;
         this.woodCuttingXp = 0;
@@ -59,6 +66,58 @@ public class Player {
         this.playerLevel++;
     }
 
+    //Player xp
+    public int getPlayerXp()
+    {
+        return this.playerXp;
+    }
+    public String getPlayerXpString()
+    {
+        return String.valueOf(this.playerXp);
+    }
+
+    public void setPlayerXp(int xp)
+    {
+        if (xp >=0)
+        {
+            this.playerXp = xp;
+        }
+    }
+    public void setPlayerXp()
+    {
+        this.playerXp++;
+    }
+
+    //Player xp needed
+    public double getPlayerXpNeeded()
+    {
+        return this.playerXpNeeded;
+    }
+    public String getPlayerXpNeededString()
+    {
+        return String.valueOf(this.playerXpNeeded);
+    }
+
+    public void setPlayerXpNeeded(double xp)
+    {
+        if (xp >=1)
+        {
+            this.playerXpNeeded = xp;
+        }
+    }
+
+    public boolean CheckIfPlayerLevelUp(){
+        if (this.playerXpNeeded - this.playerXp <= 0.999){
+            this.setPlayerXpNeeded(this.playerXpNeeded * 1.1);
+            this.setPlayerXp(0);
+            this.setPlayerLevel();
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     //Woodcutting level
     public int getWoodCuttingLevel()
     {
@@ -73,6 +132,7 @@ public class Player {
         if (level >=1)
         {
             this.woodCuttingLevel = level;
+
         }
     }
     public void setWoodCuttingLevel()
@@ -164,16 +224,52 @@ public class Player {
     //TIME TO LEVEL
 
     public String woodCuttingXpLeft(){
-        //checkIfWoodCuttingLevelUp();
+
         return String.valueOf((int)(this.woodCuttingXpNeeded - this.woodCuttingXp));
     }
 
     public boolean checkIfWoodCuttingLevelUp(){
         if (this.woodCuttingXpNeeded - this.woodCuttingXp <= 0.999){
+            this.setWoodCuttingXpNeeded(this.getWoodCuttingXpNeeded() * XpNeedMultiplier(this.woodCuttingLevel));
+            this.setWoodCuttingXp(0);
+            this.setWoodCuttingLevel();
+            if (this.getWoodCuttingLevel() % 5 == 0){
+                this.setWoodCuttingXpPerClick();
+            }
             return true;
         }
         else {
             return false;
+        }
+    }
+    public double XpNeedMultiplier(int level)
+    {
+        if (level <10){
+            return 1.25;
+        }
+        else if (level <20){
+            return 1.2;
+        }
+        else if (level <30){
+            return 1.1;
+        }
+        else if (level <40){
+            return 1.05;
+        }
+        else if (level <50){
+            return 1.04;
+        }
+        else if (level <60){
+            return 1.04;
+        }
+        else if (level <70){
+            return 1.03;
+        }
+        else if (level <80){
+            return 1.02;
+        }
+        else {
+            return 1.1;
         }
     }
 

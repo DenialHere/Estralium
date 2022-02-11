@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--TODO:
+    fix this layout it is horrible and not flexible at all
+    add image to chop button
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,8 +16,7 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_marginTop="25dp"
+
         >
 
         <TableRow
@@ -31,7 +34,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/textViewWoodCuttingLevel4"
+                android:id="@+id/textViewPlayerLevel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -43,16 +46,33 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="25dp">
+
+            <ImageView
+                android:id="@+id/imageViewLogs"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="220dp"
+                app:srcCompat="@drawable/wood_cutting_icon" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="25dp">
 
             <TextView
                 android:id="@+id/textViewLogs"
-                android:layout_width="177dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_weight="1"
-                android:text="Logs: 0"
+                android:layout_width="wrap_content"
+                android:text="0"
+                android:layout_marginEnd="220dp"
+                android:textAlignment="center"
                 android:textSize="16sp" />
+
         </TableRow>
 
         <TableRow
@@ -64,7 +84,7 @@
             <Button
                 android:id="@+id/buttonChop"
                 android:layout_width="wrap_content"
-                android:layout_height="200dp"
+                android:layout_height="300dp"
                 android:layout_marginStart="100dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="100dp"
