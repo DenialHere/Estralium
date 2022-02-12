@@ -7,7 +7,9 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer resourceSound;
     MediaPlayer levelUpSound;
 
+    ProgressBar woodCuttingPb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,15 +36,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void Chop(View view) {
 
+        woodCuttingPb = findViewById(R.id.progressBarWoodCutting);
         if (view.getId() == R.id.buttonChop)
         {
             resourceSound = MediaPlayer.create(this, R.raw.wood_chop2);
             resourceSound.start();
             logs = findViewById(R.id.textViewLogs);
-            tvWoodCuttingXpLeft = findViewById(R.id.textViewWoodCuttingXpLeft);
             gather.Harvest(invent, 1, view.getId(), player);
             logs.setText(String.valueOf(invent.numOfLogs));
-            tvWoodCuttingXpLeft.setText(woodCuttingXpLeft + player.woodCuttingXpLeft());
+            ProgressBar(player);
         }
 
         CheckIfLevel(view);
@@ -49,7 +53,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    public void ProgressBar(Player player)
+    {
+        woodCuttingPb.setMax((int)player.getWoodCuttingXpNeeded());
+
+        woodCuttingPb.setProgress(player.getWoodCuttingXp());
+    }
     public void CheckIfLevel(View view){
+        DialogueManager dm = new DialogueManager();
 
 
         if (view.getId() == R.id.buttonChop)
@@ -57,9 +69,9 @@ public class MainActivity extends AppCompatActivity {
 
             if (player.checkIfWoodCuttingLevelUp()) {
                 tvWoodCuttingLevel = findViewById(R.id.textViewWoodCuttingLevel);
-                tvWoodCuttingXpLeft.setText(woodCuttingXpLeft + player.woodCuttingXpLeft());
+                ProgressBar(player);
                 tvWoodCuttingLevel.setText(levelDisplay + player.getWoodCuttingLevelString());
-                showLevelUpDialog(player.getWoodCuttingLevel(), "Woodcutting");
+                dm.Show(this, player.getWoodCuttingLevel(), "Woodcutting");
             }
         }
 
@@ -67,46 +79,18 @@ public class MainActivity extends AppCompatActivity {
         {
             tvPlayerLevel = findViewById(R.id.textViewPlayerLevel);
             tvPlayerLevel.setText(levelDisplay + player.getPlayerLevelString());
-            showLevelUpDialog(player.getPlayerLevel(), "You");
+            dm.Show(this, player.getPlayerLevel(), "Player");
         }
     }
 
-    public void LevelUpMessage(int level, String nameOfSkill){
-        String levelUpMessage = nameOfSkill + " level up! You are now level " + level + "xp needed: " + player.getPlayerXpNeededString();
-
-        if (level % 5 == 0){
-            levelUpMessage += "\n50% more xp per click!";
-        }
-
-        Toast.makeText(getApplicationContext(), levelUpMessage, Toast.LENGTH_SHORT).show();
-
-
-    }
 
     public void showLevelUpDialog(int level, String nameOfSkill)
     {
-        String levelUpMessageString = nameOfSkill + " level up! \nYou are now level " + level + ".";
-
-        Dialog dialog = new Dialog(MainActivity.this);
-        dialog.setContentView(R.layout.level_message);
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
-        TextView levelUpMessage = dialog.findViewById(R.id.textViewLevelUp);
-        levelUpMessage.setText(levelUpMessageString);
-
-
-        ImageView img = dialog.findViewById(R.id.imageViewIcon);
-        if (nameOfSkill == "Woodcutting"){
-            img.setImageResource(R.drawable.wood_cutting_icon);
-        }
-        if (nameOfSkill == "You"){
-            img.setImageResource(R.drawable.player);
-        }
 
         levelUpSound = MediaPlayer.create(this, R.raw.level_up_sound);
         levelUpSound.start();
 
 
-        dialog.show();
     }
 
 

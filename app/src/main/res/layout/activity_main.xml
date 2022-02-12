@@ -3,11 +3,11 @@
     fix this layout it is horrible and not flexible at all
     add image to chop button
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:onClick="Chop"
     android:orientation="vertical"
     tools:context=".MainActivity">
@@ -15,22 +15,42 @@
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        >
+        android:layout_height="match_parent">
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="25dp">
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="25dp"
+            android:layout_weight="1"
+            android:weightSum="4"
+
+
+            >
 
             <TextView
                 android:id="@+id/textViewPlayerName"
-                android:layout_width="177dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
                 android:layout_weight="1"
-                android:text="PLAYERNAME"
+                android:text="Name"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/coin"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/textViewPlayerLevel4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:layout_weight="1"
+                android:text="0"
                 android:textSize="16sp" />
 
             <TextView
@@ -39,21 +59,53 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Level: 1"
+                android:textAlignment="center"
                 android:textSize="16sp" />
 
         </TableRow>
 
         <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_weight="1"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="25dp">
+            android:weightSum="5">
 
             <ImageView
                 android:id="@+id/imageViewLogs"
-                android:layout_width="24dp"
+                android:layout_width="fill_parent"
                 android:layout_height="24dp"
-                android:layout_marginEnd="220dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/wood_cutting_icon" />
+
+            <ImageView
+                android:id="@+id/imageViewLogs2"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/wood_cutting_icon" />
+
+            <ImageView
+                android:id="@+id/imageViewLogs3"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/wood_cutting_icon" />
+
+            <ImageView
+                android:id="@+id/imageViewLogs4"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/wood_cutting_icon" />
+
+            <ImageView
+                android:id="@+id/imageViewLogs5"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
                 app:srcCompat="@drawable/wood_cutting_icon" />
 
         </TableRow>
@@ -61,23 +113,61 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="25dp">
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:id="@+id/textViewLogs"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="0"
-                android:layout_marginEnd="220dp"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textViewLogs12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="0"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textViewLogs13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="0"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textViewLogs14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="0"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textViewLogs15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="0"
                 android:textAlignment="center"
                 android:textSize="16sp" />
 
         </TableRow>
 
         <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp"
 
             >
 
@@ -96,7 +186,8 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
 
             <TextView
                 android:id="@+id/textViewWoodCuttingLevel"
@@ -113,24 +204,23 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:weightSum="1"
+            >
 
-            <TextView
-                android:id="@+id/textViewWoodCuttingXpLeft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ProgressBar
+                android:id="@+id/progressBarWoodCutting"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginStart="100dp"
                 android:layout_marginEnd="100dp"
-                android:layout_weight="1"
-                android:text="XP left: 10"
-                android:textAlignment="center"
-                android:textSize="16sp" />
+                />
+
         </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
     </TableLayout>
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

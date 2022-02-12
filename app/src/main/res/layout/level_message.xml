@@ -5,16 +5,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="#0C0808"
-    android:backgroundTint="#171515"
-    android:orientation="vertical">
+    android:background="#CC000000"
+    android:orientation="vertical"
+    >
 
     <ImageView
         android:id="@+id/imageViewIcon"
-        android:layout_width="230dp"
-        android:layout_height="151dp"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_weight="1"
         android:layout_gravity="center"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="10dp"
@@ -30,5 +31,5 @@
         android:text="LEVEL UP"
         android:textAlignment="center"
         android:textColor="#FFFCFC"
-        android:textSize="20sp" />
+        android:textSize="16sp" />
 </LinearLayout>
