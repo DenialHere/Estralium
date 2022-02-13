@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 tvWoodCuttingLevel = findViewById(R.id.textViewWoodCuttingLevel);
                 ProgressBar(player);
                 tvWoodCuttingLevel.setText(levelDisplay + player.getWoodCuttingLevelString());
-                dm.Show(this, player.getWoodCuttingLevel(), "Woodcutting");
+                dm.Show(this, player.getWoodCuttingLevel(), "Woodcutting", "Bottom");
             }
         }
 
@@ -79,17 +79,16 @@ public class MainActivity extends AppCompatActivity {
         {
             tvPlayerLevel = findViewById(R.id.textViewPlayerLevel);
             tvPlayerLevel.setText(levelDisplay + player.getPlayerLevelString());
-            dm.Show(this, player.getPlayerLevel(), "Player");
+            dm.Show(this, player.getPlayerLevel(), "You", "Center");
+
         }
     }
 
 
     public void showLevelUpDialog(int level, String nameOfSkill)
     {
-
         levelUpSound = MediaPlayer.create(this, R.raw.level_up_sound);
         levelUpSound.start();
-
 
     }
 
