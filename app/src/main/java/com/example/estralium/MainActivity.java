@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     SoundPlayer levelUpSound = new SoundPlayer();
 
     ProgressBar woodCuttingPb;
-
+    //TESTING
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
