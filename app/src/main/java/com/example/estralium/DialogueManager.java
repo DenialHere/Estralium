@@ -9,12 +9,13 @@ import android.widget.TextView;
 
 public class DialogueManager {
 
-/**   To show a level up dialog pass through the current activity your in, the level of the skill,
- * the name of the skill in UPPERCASE and the desired position of the dialog box In UPPERCASE
- * ex: player.Show(this, player.getWoodCuttingLevel(), "Woodcutting", "Bottom")
+/**   To show a level up dialog pass through the current activity your in,
+ *    the name of the skill in with the first letter in UPPERCASE, the picture
+ *    you wish to be displayed, the level of the skill and the desired position of the dialog box
+ *    ex: dm.Show(this, "Woodcutting", R.drawable.wood_cutting_icon, player.getWoodCuttingLevel(), Gravity.BOTTOM);
  */
 
-    public void Show(Activity activity, int level, String nameOfSkill, String pos) {
+    public void Show(Activity activity, String nameOfSkill, int skillPicture, int level, int position) {
 
         //The default message with the name of the skill and the level passed through the function
         String levelUpMessageString = nameOfSkill + " level up! \nYou are now level " + level + ".";
@@ -39,35 +40,13 @@ public class DialogueManager {
         //The textview is where the level up text will be
         levelUpMessage.setText(levelUpMessageString);
 
-        //Checking which position was passed in and setting the dialog to that position
-        switch (pos) {
-            case "Bottom":
-                dialog.getWindow().setGravity(Gravity.BOTTOM);
-                break;
-            case "Center":
-            case "Middle":
-                dialog.getWindow().setGravity(Gravity.CENTER);
-                break;
-            case "Top":
-                dialog.getWindow().setGravity(Gravity.TOP);
-                break;
-            default:
-                break;
-        }
+        //Setting the position of the dialog box
+        dialog.getWindow().setGravity(position);
 
-        //Checking which skill was passed and setting the dialog image to the skill icon
-        if (nameOfSkill == "Woodcutting"){
-            ImageView img = dialog.findViewById(R.id.imageViewIcon);
-            img.setImageResource(R.drawable.wood_cutting_icon);
-        }
-        else if (nameOfSkill == "You"){
-            ImageView img = dialog.findViewById(R.id.imageViewIcon);
-            img.setImageResource(R.drawable.player);
-        }
-        else {
-            ImageView img = dialog.findViewById(R.id.imageViewIcon);
-            img.setImageResource(R.drawable.ic_launcher_background);
-        }
+        //Setting the icon image of the skill from the image passed
+        ImageView img = dialog.findViewById(R.id.imageViewIcon);
+        img.setImageResource(skillPicture);
+
 
         //Displaying the custom dialog
         dialog.show();
