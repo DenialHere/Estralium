@@ -273,13 +273,9 @@ public class Player {
         }
     }
 
-    public void Harvest(Inventory invent, int harvestCount, int resource)
+    public void AddExp()
     {
-        if (resource == R.id.buttonChop){
-            invent.numOfLogs = invent.numOfLogs + harvestCount;
-            this.setWoodCuttingXp();
-        }
-
+        this.setWoodCuttingXp();
         this.playerXp++;
 
     }

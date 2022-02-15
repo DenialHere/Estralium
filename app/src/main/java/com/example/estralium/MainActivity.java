@@ -14,10 +14,11 @@ public class MainActivity extends AppCompatActivity {
     boolean isMuted = false;
 
     Player player = new Player();
-    Gather gather = new Gather();
-    Inventory invent = new Inventory();
+    Inventory inventory = new Inventory();
     SoundPlayer gatherSound = new SoundPlayer();
     SoundPlayer levelUpSound = new SoundPlayer();
+    Resource resource = new Resource("Logs");
+
 
     ProgressBar woodCuttingPb;
     //TESTING
@@ -25,24 +26,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
-
-    public void Chop(View view) {
-        woodCuttingPb = findViewById(R.id.progressBarWoodCutting);
-        if (view.getId() == R.id.buttonChop)
-        {
-            gatherSound.Play(this, R.raw.axe_chop, isMuted);
-            logs = findViewById(R.id.textViewLogs);
-            gather.Harvest(invent, 1, view.getId(), player);
-            logs.setText(String.valueOf(invent.numOfLogs));
-            ProgressBar(player);
-        }
-
-        CheckIfLevel(view);
-
-
-
-
     }
 
     public void ProgressBar(Player player)
@@ -76,10 +59,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-
-
-
+    public void Chop(View view){
+        inventory.add(resource);
+        player.AddExp();
+        System.out.println(inventory.getLog_Quantity());
+    }
 }
