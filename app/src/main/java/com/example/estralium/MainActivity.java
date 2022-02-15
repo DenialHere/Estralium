@@ -11,7 +11,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
     TextView logs, tvWoodCuttingLevel, tvWoodCuttingXpLeft, tvPlayerLevel;
     final String levelDisplay = "Level: ";
-    boolean isMuted = false;
+    boolean isMuted = true;
 
     Player player = new Player();
     Gather gather = new Gather();
@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     SoundPlayer levelUpSound = new SoundPlayer();
 
     ProgressBar woodCuttingPb;
-    //TESTING
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,9 +36,10 @@ public class MainActivity extends AppCompatActivity {
             gather.Harvest(invent, 1, view.getId(), player);
             logs.setText(String.valueOf(invent.numOfLogs));
             ProgressBar(player);
+            player.checkIfLevel(this,"Woodcutting",  isMuted);
         }
 
-        CheckIfLevel(view);
+
 
 
 
@@ -51,30 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         woodCuttingPb.setProgress(player.getWoodCuttingXp());
     }
-    public void CheckIfLevel(View view){
-        DialogueManager dm = new DialogueManager();
 
-
-        if (view.getId() == R.id.buttonChop)
-        {
-
-            if (player.checkIfWoodCuttingLevelUp()) {
-                levelUpSound.Play(this, R.raw.level_up_sound, isMuted);
-                tvWoodCuttingLevel = findViewById(R.id.textViewWoodCuttingLevel);
-                ProgressBar(player);
-                tvWoodCuttingLevel.setText(levelDisplay + player.getWoodCuttingLevelString());
-                dm.Show(this, "Woodcutting", R.drawable.wood_cutting_icon, player.getWoodCuttingLevel(), Gravity.BOTTOM);
-            }
-        }
-
-        if (player.CheckIfPlayerLevelUp())
-        {
-            tvPlayerLevel = findViewById(R.id.textViewPlayerLevel);
-            tvPlayerLevel.setText(levelDisplay + player.getPlayerLevelString());
-            dm.Show(this, "You", R.drawable.player, player.getPlayerLevel(), Gravity.CENTER);
-            levelUpSound.Play(this, R.raw.level_up_sound, isMuted);
-        }
-    }
 
 
 

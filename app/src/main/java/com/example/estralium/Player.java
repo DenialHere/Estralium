@@ -1,8 +1,12 @@
 package com.example.estralium;
 
+import android.app.Activity;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class Player {
+public class Player extends Activity{
 
     private int playerLevel;
     private int playerXp;
@@ -129,6 +133,7 @@ public class Player {
     }
     public void setWoodCuttingLevel(int level)
     {
+
         if (level >=1)
         {
             this.woodCuttingLevel = level;
@@ -242,6 +247,62 @@ public class Player {
             return false;
         }
     }
+
+    public void checkIfLevel(Activity activity, String nameOfSkill, Boolean isMuted) {
+
+        final String levelDisplay = "Level: ";
+        SoundPlayer levelUpSound;
+        DialogueManager dm = new DialogueManager();
+
+        switch (nameOfSkill) {
+            case "Woodcutting":
+            case "woodcutting":
+                //Defining the text view of the woodcutting level
+                TextView tvWoodCuttingLevel;
+
+                //If woodcutting xp is greater than woodcutting xp needed
+                if (this.woodCuttingXpNeeded - this.woodCuttingXp <= 0.999) {
+                    //Play level up sound
+                    levelUpSound = new SoundPlayer();
+                    levelUpSound.Play(activity, R.raw.level_up_sound, isMuted);
+
+                    //Incrementing level
+                    this.setWoodCuttingLevel();
+                    //Setting woodcutting xp to new value after level
+                    this.setWoodCuttingXpNeeded(this.getWoodCuttingXpNeeded() * XpNeedMultiplier(this.woodCuttingLevel));
+                    //Setting woodcutting xp to 0
+                    this.setWoodCuttingXp(0);
+
+                    //Setting textview to the the woodcutting level textview and setting it to new
+                    //level
+                    tvWoodCuttingLevel = activity.findViewById(R.id.textViewWoodCuttingLevel);
+                    tvWoodCuttingLevel.setText(levelDisplay + this.getWoodCuttingLevelString());
+
+                    //Showing level up dialog
+                    dm.Show(activity, "Woodcutting", R.drawable.wood_cutting_icon, this.getWoodCuttingLevel(), Gravity.BOTTOM);
+
+                    //If new woodcutting level is a muiltplie of 5 increment xp per click
+                    if (this.getWoodCuttingLevel() % 5 == 0) {
+                        this.setWoodCuttingXpPerClick();
+                    }
+
+                }
+            case "You":
+                if (this.playerXpNeeded - this.playerXp <= 0.999) {
+                    //Play level up sound
+                    levelUpSound = new SoundPlayer();
+                    levelUpSound.Play(activity, R.raw.level_up_sound, isMuted);
+                    //Setting textview of player level to the the new level
+                    TextView tvPlayerLevel = activity.findViewById(R.id.textViewPlayerLevel);
+                    tvPlayerLevel.setText(levelDisplay + this.getPlayerLevelString());
+                    //Showing level up dialog
+                    dm.Show(activity, "You", R.drawable.player, this.getPlayerLevel(), Gravity.CENTER);
+                }
+
+        }
+
+    }
+
     public double XpNeedMultiplier(int level)
     {
         if (level <10){
@@ -285,3 +346,4 @@ public class Player {
     }
 
 }
+
