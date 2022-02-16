@@ -1,31 +1,41 @@
 package com.example.estralium;
+import java.util.Random;
 
 public class Inventory {
 
+    Random random = new Random();
     public int Log_Quantity = 0, Stone_Quantity, Iron_Ore_Quantity, Copper_Ore_Quantity, Tin_Ore_Quantity;
+    public int Rare_Item_Quantity = 0;
     public int Multiplier = 1;
 
     public void add(Resource resource){
 
+      Multiplier = CalculateMultiplier(1);
+
         if(resource.getName() == "Logs"){
 
             this.Log_Quantity = this.Log_Quantity + Multiplier;
+            CheckForRareDrop();
 
         }else if (resource.getName() == "Stones"){
 
             this.Stone_Quantity = this.Stone_Quantity + Multiplier;
+            CheckForRareDrop();
 
         }else if(resource.getName() == "IronOre"){
 
             this.Iron_Ore_Quantity = this.Iron_Ore_Quantity + Multiplier;
+            CheckForRareDrop();
 
         }else if(resource.getName() == "CopperOre"){
 
             this.Copper_Ore_Quantity = this.Copper_Ore_Quantity + Multiplier;
+            CheckForRareDrop();
 
         }else if(resource.getName() == "TinOre"){
 
             this.Tin_Ore_Quantity = this.Tin_Ore_Quantity + Multiplier;
+            CheckForRareDrop();
 
         }else{
 
@@ -59,6 +69,20 @@ public class Inventory {
         }else{
 
             System.out.println("ERROR");
+
+        }
+
+    }
+    public int CalculateMultiplier(int Multiplier){
+
+        Multiplier = Multiplier + Rare_Item_Quantity;
+        return Multiplier;
+    }
+    public void CheckForRareDrop(){
+
+        if(random.nextInt(1001) == 1000){
+
+            Rare_Item_Quantity = Rare_Item_Quantity + 1;
 
         }
 

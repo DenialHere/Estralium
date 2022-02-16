@@ -4,245 +4,95 @@ import android.widget.Toast;
 
 public class Player {
 
-    private int playerLevel;
-    private int playerXp;
-    private double playerXpNeeded;
-    private int woodCuttingLevel;
-    private int woodCuttingXp;
-    private int numberOfLogs;
-    private int woodCuttingXpPerClick;
-    private double woodCuttingXpNeeded;
+    public boolean woodcutting = false, mining = false, fishing = false, farming = false;
+    public int WoodcuttingLevel, MiningLevel, FishingLevel, FarmingLevel;
+    public int WoodcuttingExperience, MiningExperience, FishingExperience, FarmingExperience;
+    public int ExperienceMultiplier = 1;
+    public int PlayerLevel, PlayerExperience;
 
-    public Player(int playerLevel,
-                  int playerXp,
-                  double playerXpNeeded,
-                  int woodCuttingLevel,
-                  double woodCuttingXpNeeded,
-                  int woodCuttingXp,
-                  int numberOfLogs,
-                  int woodCuttingXpPerClick)
-    {
-        this.playerLevel = playerLevel;
-        this.playerXp = playerXp;
-        this.playerXpNeeded = playerXpNeeded;
-        this.woodCuttingLevel = woodCuttingLevel;
-        this.woodCuttingXpNeeded = woodCuttingXpNeeded;
-        this.woodCuttingXp = woodCuttingXp;
-        this.numberOfLogs = numberOfLogs;
-        this.woodCuttingXpPerClick = woodCuttingXpPerClick;
-    }
+    public Player(String Skill){
 
-    public Player (){
-        this.playerLevel = 1;
-        this.playerXp = 0;
-        this.playerXpNeeded = 60;
-        this.woodCuttingLevel = 1;
-        this.woodCuttingXpNeeded = 10;
-        this.woodCuttingXp = 0;
-        this.numberOfLogs = 0;
-        this.woodCuttingXpPerClick = 1;
-    }
+        if(Skill == "woodcutting") {
 
-    //Player level
+            this.woodcutting = true;
 
-    public int getPlayerLevel()
-    {
-        return this.playerLevel;
-    }
-    public String getPlayerLevelString()
-    {
-        return String.valueOf(this.playerLevel);
-    }
+        }else if(Skill == "mining"){
 
-    public void setPlayerLevel(int level)
-    {
-        if (level >=1)
-        {
-            this.playerLevel = level;
-        }
-    }
-    public void setPlayerLevel()
-    {
-        this.playerLevel++;
-    }
+            this.mining = true;
 
-    //Player xp
-    public int getPlayerXp()
-    {
-        return this.playerXp;
-    }
-    public String getPlayerXpString()
-    {
-        return String.valueOf(this.playerXp);
-    }
+        }else if(Skill == "fishing"){
 
-    public void setPlayerXp(int xp)
-    {
-        if (xp >=0)
-        {
-            this.playerXp = xp;
-        }
-    }
-    public void setPlayerXp()
-    {
-        this.playerXp++;
-    }
+            this.fishing = true;
 
-    //Player xp needed
-    public double getPlayerXpNeeded()
-    {
-        return this.playerXpNeeded;
-    }
-    public String getPlayerXpNeededString()
-    {
-        return String.valueOf(this.playerXpNeeded);
-    }
+        }else if(Skill == "farming"){
 
-    public void setPlayerXpNeeded(double xp)
-    {
-        if (xp >=1)
-        {
-            this.playerXpNeeded = xp;
-        }
-    }
+            this.farming = true;
 
-    public boolean CheckIfPlayerLevelUp(){
-        if (this.playerXpNeeded - this.playerXp <= 0.999){
-            this.setPlayerXpNeeded(this.playerXpNeeded * 1.1);
-            this.setPlayerXp(0);
-            this.setPlayerLevel();
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
+        }else{
 
-    //Woodcutting level
-    public int getWoodCuttingLevel()
-    {
-        return this.woodCuttingLevel;
-    }
-    public String getWoodCuttingLevelString()
-    {
-        return String.valueOf(this.woodCuttingLevel);
-    }
-    public void setWoodCuttingLevel(int level)
-    {
-        if (level >=1)
-        {
-            this.woodCuttingLevel = level;
+            this.woodcutting = false;
+            this.mining = false;
+            this.fishing = false;
+            this.farming = false;
 
         }
-    }
-    public void setWoodCuttingLevel()
-    {
-        this.woodCuttingLevel++;
+
     }
 
-    //Woodcutting xp
-    public int getWoodCuttingXp()
-    {
-        return this.woodCuttingXp;
-    }
-    public String getWoodCuttingXpString()
-    {
-        return String.valueOf(this.woodCuttingXp);
-    }
-    public void setWoodCuttingXp(int xp)
-    {
-        if (xp >=0)
-        {
-            this.woodCuttingXp = xp;
-        }
-    }
-    public void setWoodCuttingXp()
-    {
-        this.woodCuttingXp = this.woodCuttingXp + this.woodCuttingXpPerClick;
-    }
+    public void AddSkillExperience(Resource resource){
 
-    //Woodcutting xp needed
-    public double getWoodCuttingXpNeeded()
-    {
-        return this.woodCuttingXpNeeded;
-    }
-    public String getWoodCuttingXpNeededString()
-    {
-        return String.valueOf(this.woodCuttingXpNeeded);
-    }
-    public void setWoodCuttingXpNeeded(double xp)
-    {
-        if (xp >=0)
-        {
-            this.woodCuttingXpNeeded = xp;
+        int exp = resource.getExperience();
+
+        if ( isWoodcutting() == true){
+
+            WoodcuttingExperience = WoodcuttingExperience + (exp * ExperienceMultiplier);
+
+        }else if (isMining() == true){
+            MiningExperience = MiningExperience + (exp * ExperienceMultiplier);
+
+        }else if(isFishing() == true){
+
+            FishingExperience = FishingExperience + (exp * ExperienceMultiplier);
+
+        }else if(isFarming() == true){
+
+            FarmingExperience = FarmingExperience + (exp * ExperienceMultiplier);
+
+        }else{
+
+            System.out.println("ERROR Handling the Experience Calculator!");
+            System.out.println("You must be inside a building to gain experience.");
         }
 
     }
 
-    //Woodcutting xp per click
-    public double getWoodCuttingXpPerClick()
-    {
-        return this.woodCuttingXpPerClick;
-    }
-    public String getWoodCuttingXpPerClickString()
-    {
-        return String.valueOf(this.woodCuttingXpPerClick);
-    }
-    public void setWoodCuttingXpPerClick(int xp)
-    {
-        if (xp >=1)
-        {
-            this.woodCuttingXpPerClick = xp;
+    public int CheckCurrentSkillLevel(){
+
+        if (isWoodcutting() == true){
+
+            getWoodcuttingLevel();
+
+        }else if (isMining() == true){
+
+            getMiningLevel();
+
+        }else if(isFishing() == true){
+
+            getFishingLevel();
+
+        }else if(isFarming() == true){
+
+            getFarmingLevel();
+
+        }else{
+
+            System.out.println("UNKNOWN ERROR Handling the level checker!");
+
         }
-    }
-    public void setWoodCuttingXpPerClick()
-    {
-        this.woodCuttingXpPerClick++;
+        return 0;
     }
 
-    //Number of logs
-    public double getNumberOfLogs()
-    {
-        return this.numberOfLogs;
-    }
-    public String getNumberOfLogsString()
-    {
-        return String.valueOf(this.numberOfLogs);
-    }
-    public void setNumberOfLogs(int num)
-    {
-        if (num >=0)
-        {
-            this.numberOfLogs = num;
-        }
-    }
-    public void setNumberOfLogs()
-    {
-        this.numberOfLogs++;
-    }
-
-    //TIME TO LEVEL
-
-    public String woodCuttingXpLeft(){
-
-        return String.valueOf((int)(this.woodCuttingXpNeeded - this.woodCuttingXp));
-    }
-
-    public boolean checkIfWoodCuttingLevelUp(){
-        if (this.woodCuttingXpNeeded - this.woodCuttingXp <= 0.999){
-            this.setWoodCuttingXpNeeded(this.getWoodCuttingXpNeeded() * XpNeedMultiplier(this.woodCuttingLevel));
-            this.setWoodCuttingXp(0);
-            this.setWoodCuttingLevel();
-            if (this.getWoodCuttingLevel() % 5 == 0){
-                this.setWoodCuttingXpPerClick();
-            }
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    public double XpNeedMultiplier(int level)
+    private double CalculateExperienceMultiplier(int level)
     {
         if (level <10){
             return 1.25;
@@ -273,11 +123,141 @@ public class Player {
         }
     }
 
-    public void AddExp()
-    {
-        this.setWoodCuttingXp();
-        this.playerXp++;
+    //TODO
+    public void CalculateExperienceNeededToLevel(){
+
+
+
+        }
+
+    //TODO
+    public void CalculateCurrentSkillLevel(int experience){
+
+
 
     }
+
+    /** GETTER AND SETTERS */
+
+    public boolean isWoodcutting() {
+        return woodcutting;
+    }
+
+    public void setWoodcutting(boolean woodcutting) {
+        this.woodcutting = woodcutting;
+    }
+
+    public boolean isMining() {
+        return mining;
+    }
+
+    public void setMining(boolean mining) {
+        this.mining = mining;
+    }
+
+    public boolean isFishing() {
+        return fishing;
+    }
+
+    public void setFishing(boolean fishing) {
+        this.fishing = fishing;
+    }
+
+    public boolean isFarming() {
+        return farming;
+    }
+
+    public void setFarming(boolean farming) {
+        this.farming = farming;
+    }
+
+    public int getWoodcuttingLevel() {
+        return WoodcuttingLevel;
+    }
+
+    public void setWoodcuttingLevel(int woodcuttingLevel) {
+        WoodcuttingLevel = woodcuttingLevel;
+    }
+
+    public int getMiningLevel() {
+        return MiningLevel;
+    }
+
+    public void setMiningLevel(int miningLevel) {
+        MiningLevel = miningLevel;
+    }
+
+    public int getFishingLevel() {
+        return FishingLevel;
+    }
+
+    public void setFishingLevel(int fishingLevel) {
+        FishingLevel = fishingLevel;
+    }
+
+    public int getFarmingLevel() {
+        return FarmingLevel;
+    }
+
+    public void setFarmingLevel(int farmingLevel) {
+        FarmingLevel = farmingLevel;
+    }
+
+    public int getWoodcuttingExperience() {
+        return WoodcuttingExperience;
+    }
+
+    public void setWoodcuttingExperience(int woodcuttingExperience) {
+        WoodcuttingExperience = woodcuttingExperience;
+    }
+
+    public int getMiningExperience() {
+        return MiningExperience;
+    }
+
+    public void setMiningExperience(int miningExperience) {
+        MiningExperience = miningExperience;
+    }
+
+    public int getFishingExperience() {
+        return FishingExperience;
+    }
+
+    public void setFishingExperience(int fishingExperience) {
+        FishingExperience = fishingExperience;
+    }
+
+    public int getFarmingExperience() {
+        return FarmingExperience;
+    }
+
+    public void setFarmingExperience(int farmingExperience) {
+        FarmingExperience = farmingExperience;
+    }
+
+    public int getPlayerLevel() {
+        return PlayerLevel;
+    }
+
+    public void setPlayerLevel(int playerLevel) {
+        PlayerLevel = playerLevel;
+    }
+
+    public int getPlayerExperience() {
+        return PlayerExperience;
+    }
+
+    public void setPlayerExperience(int playerExperience) {
+        PlayerExperience = playerExperience;
+    }
+
+    public int getExperienceMultiplier() {
+        return ExperienceMultiplier;
+    }
+
+    public void setExperienceMultiplier(int experienceMultiplier) {
+        ExperienceMultiplier = experienceMultiplier;
+    }
+
 
 }

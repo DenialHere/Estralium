@@ -2,22 +2,19 @@ package com.example.estralium;
 
 public class Resource {
 
-    public double Value, Experience;
+    public double Value;
+    public int Experience;
     public String Name;
 
-
-    //This constructor is used for the vendor. Where the user may buy and/or sell their resources.
-    public Resource(String Name, double Value, double Experience){
+    public Resource(String Name, double Value){
         this.Name = Name;
         this.Value = Value;
-        this.Experience = Experience;
     }
 
-    //This Constructor should be used to help the inventory manager determine which resource to increment upon harvesting.
-    public Resource(String Name){
+    public Resource(String Name, int Experience){
 
         this.Name = Name;
-
+        this.Experience = Experience;
     }
 
     public String getName() {
@@ -32,10 +29,10 @@ public class Resource {
     public void setValue(double value) {
         Value = value;
     }
-    public double getExperience() {
+    public int getExperience() {
         return Experience;
     }
-    public void setExperience(double experience) {
+    public void setExperience(int experience) {
         Experience = experience;
     }
 
