@@ -20,7 +20,8 @@ public class MainActivity extends AppCompatActivity {
     Inventory inventory = new Inventory();
     TextView logs, tvWoodCuttingLevel, tvWoodCuttingXpLeft, tvPlayerLevel;
     boolean isMuted = false;
-    ProgressBar pb;
+    ProgressBar woodCuttingPb;
+    SoundPlayer gatherSound = new SoundPlayer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +30,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Chop(View view){
-        inventory.add(resource);
-        player.AddSkillExperience(resource, inventory);
-        logs = findViewById(R.id.textViewLogs);
-        logs.setText(String.valueOf(inventory.getLog_Quantity()));
+        if (view.getId() == R.id.buttonChop) {
+            gatherSound.Play(this, R.raw.axe_chop, isMuted);
+            woodCuttingPb = findViewById(R.id.progressBarWoodCutting);
+
+            inventory.add(resource, player, this);
+            player.AddSkillExperience(resource, inventory);
+
+            logs = findViewById(R.id.textViewLogs);
+            logs.setText(String.valueOf(inventory.getLog_Quantity()));
+
+
+            player.checkIfLevel(this,"Woodcutting",  isMuted);
+            player.checkIfLevel(this,"You",  isMuted);
+            ProgressBar(player);
+        }
 
     }
+
+    public void ProgressBar(Player player)
+    {
+        woodCuttingPb.setMax((int)player.getWoodCuttingXpNeeded());
+
+        woodCuttingPb.setProgress(player.getWoodcuttingExperience());
+    }
+
 }

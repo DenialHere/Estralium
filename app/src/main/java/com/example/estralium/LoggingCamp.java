@@ -17,7 +17,7 @@ public class LoggingCamp extends AppCompatActivity {
 
     public void Harvest(){
 
-    inventory.add(resource);
+    inventory.add(resource, player, this);
     player.AddSkillExperience(resource, inventory);
 
 
