@@ -5,6 +5,7 @@ public class Inventory {
 
     Random random = new Random();
     public int Log_Quantity = 0, Stone_Quantity, Iron_Ore_Quantity, Copper_Ore_Quantity, Tin_Ore_Quantity;
+    private int MagicSeed;
     public int Rare_Item_Quantity = 0;
     public int Multiplier = 1;
 
@@ -137,5 +138,13 @@ public class Inventory {
     public void setMultiplier(int multiplier) {
         Multiplier = multiplier;
     }
+    public int getMagicSeed() {
+        return MagicSeed;
+    }
+
+    public void setMagicSeed(int magicSeed) {
+        MagicSeed = magicSeed;
+    }
+
 
 }
