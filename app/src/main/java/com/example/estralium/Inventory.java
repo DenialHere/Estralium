@@ -1,47 +1,51 @@
 package com.example.estralium;
+import android.app.Activity;
+import android.view.Gravity;
+
 import java.util.Random;
 
 public class Inventory {
 
     Random random = new Random();
     public int Log_Quantity = 0, Stone_Quantity, Iron_Ore_Quantity, Copper_Ore_Quantity, Tin_Ore_Quantity;
-    public int Rare_Item_Quantity = 0;
-    public int Multiplier = 1;
+    public int MagicSeed;
+    public int Multiplier;
 
-    public void add(Resource resource){
+    public void add(Resource resource, Player player, Activity activity){
 
-      Multiplier = CalculateMultiplier(1);
 
         if(resource.getName() == "Logs"){
+            Multiplier = CalculateMultiplier(player.getWoodPerClick(), resource, player);
+            this.Log_Quantity +=  player.getWoodPerClick() + Multiplier;
 
-            this.Log_Quantity = this.Log_Quantity + Multiplier;
-            CheckForRareDrop();
 
         }else if (resource.getName() == "Stones"){
 
             this.Stone_Quantity = this.Stone_Quantity + Multiplier;
-            CheckForRareDrop();
+
 
         }else if(resource.getName() == "IronOre"){
 
             this.Iron_Ore_Quantity = this.Iron_Ore_Quantity + Multiplier;
-            CheckForRareDrop();
+
 
         }else if(resource.getName() == "CopperOre"){
 
             this.Copper_Ore_Quantity = this.Copper_Ore_Quantity + Multiplier;
-            CheckForRareDrop();
+
 
         }else if(resource.getName() == "TinOre"){
 
             this.Tin_Ore_Quantity = this.Tin_Ore_Quantity + Multiplier;
-            CheckForRareDrop();
+
 
         }else{
 
             System.out.println("ERROR");
 
         }
+
+        CheckForRareDrop(resource, player, activity);
 
     }
     public void remove(Resource resource, int AmountSold){
@@ -73,16 +77,33 @@ public class Inventory {
         }
 
     }
-    public int CalculateMultiplier(int Multiplier){
+    public int CalculateMultiplier(int multiplier, Resource resource, Player player){
 
-        Multiplier = Multiplier + Rare_Item_Quantity;
+        if (resource.getName() == "Logs")
+        {
+            Multiplier = getMagicSeed();
+        }
         return Multiplier;
     }
-    public void CheckForRareDrop(){
+    public void CheckForRareDrop(Resource resource, Player player, Activity activity){
 
-        if(random.nextInt(1001) == 1000){
+        int baseDropChance = 125;
 
-            Rare_Item_Quantity = Rare_Item_Quantity + 1;
+            if (resource.getName() == "Logs")
+            {
+                if (getMagicSeed() > 0 )
+                {
+                    baseDropChance = baseDropChance * getMagicSeed();
+                }
+
+
+                if(random.nextInt(baseDropChance) == 0) {
+                    DialogueManager dm = new DialogueManager();
+
+                    setMagicSeed(getMagicSeed() + 1);
+                    dm.Show(activity, "Magic seed", R.drawable.magic_seed, 1, Gravity.TOP,
+                            2);
+                }
 
         }
 
@@ -137,5 +158,13 @@ public class Inventory {
     public void setMultiplier(int multiplier) {
         Multiplier = multiplier;
     }
+    public int getMagicSeed() {
+        return MagicSeed;
+    }
+
+    public void setMagicSeed(int magicSeed) {
+        MagicSeed = magicSeed;
+    }
+
 
 }

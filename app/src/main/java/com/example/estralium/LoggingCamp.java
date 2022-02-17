@@ -10,15 +10,15 @@ import android.widget.TextView;
 
 public class LoggingCamp extends AppCompatActivity {
 
-    Player player = new Player("woodcutting");
+    Player player = new Player();
     Resource resource = new Resource("logs", 1);
     Building building = new Building("LoggingCamp", resource);
     Inventory inventory = new Inventory();
 
     public void Harvest(){
 
-    inventory.add(resource);
-    player.AddSkillExperience(resource);
+    inventory.add(resource, player, this);
+    player.AddSkillExperience(resource, inventory);
 
 
     }

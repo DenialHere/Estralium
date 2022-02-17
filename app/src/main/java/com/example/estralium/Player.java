@@ -1,95 +1,138 @@
 package com.example.estralium;
 
-import android.widget.Toast;
+import android.app.Activity;
+import android.view.Gravity;
+import android.widget.TextView;
 
 public class Player {
 
-    public boolean woodcutting = false, mining = false, fishing = false, farming = false;
+    public int CurrentSkillTraining;
     public int WoodcuttingLevel, MiningLevel, FishingLevel, FarmingLevel;
     public int WoodcuttingExperience, MiningExperience, FishingExperience, FarmingExperience;
-    public int ExperienceMultiplier = 1;
+    public int WoodCuttingXpPerClick;
+    public int WoodPerClick;
+    public int PlayerExperienceMultiplier = 1;
     public int PlayerLevel, PlayerExperience;
+    public double PlayerXpNeeded, WoodCuttingXpNeeded;
 
-    public Player(String Skill){
 
-        if(Skill == "woodcutting") {
 
-            this.woodcutting = true;
+    public Player(int playerLevel,
+                  int playerXp,
+                  double playerXpNeeded,
+                  int woodCuttingLevel,
+                  double woodCuttingXpNeeded,
+                  int woodCuttingXp,
+                  int woodCuttingXpPerClick,
+                  int woodPerClick,
+                  int currentSkillTraining)
+    {
+        setPlayerLevel(playerLevel);
+        setPlayerExperience(playerXp);
+        setPlayerXpNeeded(playerXpNeeded);
+        setWoodcuttingLevel(woodCuttingLevel);
+        setWoodCuttingXpNeeded(woodCuttingXpNeeded);
+        setWoodcuttingExperience(woodCuttingXp);
+        setWoodCuttingXpPerClick(woodCuttingXpPerClick);
+        setWoodPerClick(woodPerClick);
+        setCurrentSkillTraining(currentSkillTraining);
+    }
 
-        }else if(Skill == "mining"){
-
-            this.mining = true;
-
-        }else if(Skill == "fishing"){
-
-            this.fishing = true;
-
-        }else if(Skill == "farming"){
-
-            this.farming = true;
-
-        }else{
-
-            this.woodcutting = false;
-            this.mining = false;
-            this.fishing = false;
-            this.farming = false;
-
-        }
+    public Player (){
+        setPlayerExperience(0);
+        setPlayerLevel(1);
+        setPlayerXpNeeded(60);
+        setWoodcuttingLevel(1);
+        setWoodCuttingXpNeeded(10);
+        setWoodcuttingExperience(0);
+        setWoodCuttingXpPerClick(1);
+        setCurrentSkillTraining(1);
+        setWoodPerClick(1);
 
     }
 
-    public void AddSkillExperience(Resource resource){
+
+    public void AddSkillExperience(Resource resource, Inventory invent){
 
         int exp = resource.getExperience();
+        String name = resource.getName();
 
-        if ( isWoodcutting() == true){
+        setPlayerExperience(getPlayerExperience() + 1);
+        if (name == "Logs")
+        {
+            if (invent.getMagicSeed() > 0)
+            {
+                WoodcuttingExperience = WoodcuttingExperience + (exp * invent.getMagicSeed());
+            }
+            else {
+                WoodcuttingExperience++;
+            }
 
-            WoodcuttingExperience = WoodcuttingExperience + (exp * ExperienceMultiplier);
 
-        }else if (isMining() == true){
-            MiningExperience = MiningExperience + (exp * ExperienceMultiplier);
-
-        }else if(isFishing() == true){
-
-            FishingExperience = FishingExperience + (exp * ExperienceMultiplier);
-
-        }else if(isFarming() == true){
-
-            FarmingExperience = FarmingExperience + (exp * ExperienceMultiplier);
-
-        }else{
-
-            System.out.println("ERROR Handling the Experience Calculator!");
-            System.out.println("You must be inside a building to gain experience.");
         }
 
     }
 
-    public int CheckCurrentSkillLevel(){
+    public void checkIfLevel(Activity activity, String nameOfSkill, Boolean isMuted) {
 
-        if (isWoodcutting() == true){
+        final String levelDisplay = "Level: ";
+        SoundPlayer levelUpSound;
+        DialogueManager dm = new DialogueManager();
 
-            getWoodcuttingLevel();
+        switch (nameOfSkill) {
+            case "Woodcutting":
+            case "woodcutting":
+                //Defining the text view of the woodcutting level
+                TextView tvWoodCuttingLevel;
 
-        }else if (isMining() == true){
+                //If woodcutting xp is greater than woodcutting xp needed
+                if (this.getWoodCuttingXpNeeded() - this.WoodcuttingExperience <= 0.999) {
+                    //Play level up sound
+                    levelUpSound = new SoundPlayer();
+                    levelUpSound.Play(activity, R.raw.level_up_sound, isMuted);
 
-            getMiningLevel();
+                    //Incrementing level
+                    this.setWoodcuttingLevel(this.getWoodcuttingLevel() + 1 );
+                    //Setting woodcutting xp to new value after level
+                    this.setWoodCuttingXpNeeded(this.getWoodCuttingXpNeeded() * CalculateExperienceMultiplier(this.getWoodcuttingLevel()));
+                    //Setting woodcutting xp to 0
+                    this.setWoodcuttingExperience(0);
 
-        }else if(isFishing() == true){
+                    //Setting textview to the the woodcutting level textview and setting it to new
+                    //level
+                    tvWoodCuttingLevel = activity.findViewById(R.id.textViewWoodCuttingLevel);
+                    tvWoodCuttingLevel.setText(levelDisplay + this.getWoodcuttingLevel());
 
-            getFishingLevel();
+                    //Showing level up dialog
+                    dm.Show(activity, "Woodcutting", R.drawable.wood_cutting_icon, this.getWoodcuttingLevel(), Gravity.BOTTOM, 1);
 
-        }else if(isFarming() == true){
+                    //If new woodcutting level is a muiltplie of 5 increment xp per click
+                    if (this.getWoodcuttingLevel() % 5 == 0) {
+                        this.setWoodCuttingXpPerClick(this.getWoodCuttingXpPerClick() + 1);
+                    }
 
-            getFarmingLevel();
+                }
+            case "You":
+                if (this.getPlayerXpNeeded() - this.getPlayerExperience() <= 0.999) {
+                    //Play level up sound
+                    levelUpSound = new SoundPlayer();
+                    levelUpSound.Play(activity, R.raw.level_up_sound, isMuted);
+                    //Incrementing level
+                    this.setPlayerLevel(this.getPlayerLevel() + 1 );
+                    //Setting player xp to new value after level
+                    this.setPlayerXpNeeded((int) (this.getPlayerExperience() * CalculateExperienceMultiplier(this.getPlayerLevel())));
+                    //Setting woodcutting xp to 0
+                    this.setPlayerExperience(0);
 
-        }else{
-
-            System.out.println("UNKNOWN ERROR Handling the level checker!");
+                    //Setting textview of player level to the the new level
+                    TextView tvPlayerLevel = activity.findViewById(R.id.textViewPlayerLevel);
+                    tvPlayerLevel.setText(levelDisplay + String.valueOf(this.getPlayerLevel()));
+                    //Showing level up dialog
+                    dm.Show(activity, "You", R.drawable.player, this.getPlayerLevel(), Gravity.CENTER, 1);
+                }
 
         }
-        return 0;
+
     }
 
     private double CalculateExperienceMultiplier(int level)
@@ -123,53 +166,11 @@ public class Player {
         }
     }
 
-    //TODO
-    public void CalculateExperienceNeededToLevel(){
 
 
-
-        }
-
-    //TODO
-    public void CalculateCurrentSkillLevel(int experience){
-
-
-
-    }
 
     /** GETTER AND SETTERS */
 
-    public boolean isWoodcutting() {
-        return woodcutting;
-    }
-
-    public void setWoodcutting(boolean woodcutting) {
-        this.woodcutting = woodcutting;
-    }
-
-    public boolean isMining() {
-        return mining;
-    }
-
-    public void setMining(boolean mining) {
-        this.mining = mining;
-    }
-
-    public boolean isFishing() {
-        return fishing;
-    }
-
-    public void setFishing(boolean fishing) {
-        this.fishing = fishing;
-    }
-
-    public boolean isFarming() {
-        return farming;
-    }
-
-    public void setFarming(boolean farming) {
-        this.farming = farming;
-    }
 
     public int getWoodcuttingLevel() {
         return WoodcuttingLevel;
@@ -251,13 +252,51 @@ public class Player {
         PlayerExperience = playerExperience;
     }
 
-    public int getExperienceMultiplier() {
-        return ExperienceMultiplier;
+    public int getPlayerExperienceMultiplier() {
+        return PlayerExperienceMultiplier;
     }
 
-    public void setExperienceMultiplier(int experienceMultiplier) {
-        ExperienceMultiplier = experienceMultiplier;
+    public void setPlayerExperienceMultiplier(int playerExperienceMultiplier) {
+        PlayerExperienceMultiplier = playerExperienceMultiplier;
+    }
+
+    public double getPlayerXpNeeded() {
+        return PlayerXpNeeded;
+    }
+
+    public void setPlayerXpNeeded(double playerXpNeeded) {
+        PlayerXpNeeded = playerXpNeeded;
+    }
+
+    public double getWoodCuttingXpNeeded() {
+        return WoodCuttingXpNeeded;
+    }
+
+    public void setWoodCuttingXpNeeded(double woodCuttingXpNeeded) {
+        WoodCuttingXpNeeded = woodCuttingXpNeeded;
+    }
+
+    public int getCurrentSkillTraining() {
+        return CurrentSkillTraining;
+    }
+
+    public void setCurrentSkillTraining(int currentSkillTraining) {
+        CurrentSkillTraining = currentSkillTraining;
     }
 
 
+    public int getWoodCuttingXpPerClick() {
+        return WoodCuttingXpPerClick;
+    }
+
+    public void setWoodCuttingXpPerClick(int woodCuttingXpPerClick) {
+        WoodCuttingXpPerClick = woodCuttingXpPerClick;
+    }
+    public int getWoodPerClick() {
+        return WoodPerClick;
+    }
+
+    public void setWoodPerClick(int woodPerClick) {
+        WoodPerClick = woodPerClick;
+    }
 }
